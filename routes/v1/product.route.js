@@ -8,8 +8,7 @@ const {
   getProducts,
   updateProductById,
   getProductById,
-  productDeleteById
-
+  productDeleteById,
 } = require("../../controllers/product.controller");
 
 // create and get

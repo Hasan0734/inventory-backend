@@ -56,12 +56,11 @@ productSchema.virtual("stock", {
   ref: "Stock",
   foreignField: "productId",
   localField: "_id",
-  justOne: true
+  justOne: true,
 });
 
 productSchema.set("toObject", { virtuals: true });
 productSchema.set("toJSON", { virtuals: true });
-
 
 const product = mongoose.model("Product", productSchema);
 

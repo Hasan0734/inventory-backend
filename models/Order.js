@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const { ObjectId } = mongoose.Schema.Types;
 
-const OrderItemSchema = new mongoose.Schema(
+const OrderSchema = new mongoose.Schema(
   {
     userId: {
       type: ObjectId,
@@ -31,6 +31,16 @@ const OrderItemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const orderItem = mongoose.model("OrderItem", OrderItemSchema);
+OrderSchema.virtual('orderItems', {
+  ref: 'OrderItem',
+  foreignField: 'orderId',
+  localField: '_id',
+})
+
+OrderSchema.set("toObject", {virtuals: true});
+OrderSchema.set("toJSON", {virtuals: true});
+
+
+const orderItem = mongoose.model("Order", OrderSchema);
 
 module.exports = orderItem;

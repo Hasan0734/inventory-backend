@@ -8,8 +8,7 @@ const {
   getCategories,
   updateSupplierById,
   getSupplierById,
-  supplierDeleteById
-
+  supplierDeleteById,
 } = require("../../controllers/supplier.controller");
 
 // create and get

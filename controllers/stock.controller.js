@@ -2,8 +2,9 @@ const {
   createStockService,
   getAllStock,
   stockUpdateByIdService,
-  getStockSerive,
+  getStockService,
   deleteStockService,
+  getStockByProductIdService,
 } = require("../services/stock.service");
 
 exports.createStock = async (req, res) => {
@@ -23,13 +24,13 @@ exports.createStock = async (req, res) => {
   }
 };
 
-exports.getCategories = async (req, res) => {
+exports.getStocks = async (req, res) => {
   try {
-    const categories = await getAllStock(req.body);
+    const stocks = await getAllStock(req.body);
 
     res.status(200).json({
       status: "success",
-      data: categories,
+      data: stocks,
     });
   } catch (error) {
     res.status(400).json({
@@ -43,8 +44,30 @@ exports.getCategories = async (req, res) => {
 exports.getStockById = async (req, res) => {
   try {
     const { id } = req.params;
-    const stock = await getStockSerive(id);
+    const stock = await getStockService(id);
 
+    if (!stock) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Stock not found",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      stock: stock,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      error: error.message,
+    });
+  }
+};
+exports.getStockByProductId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const stock = await getStockByProductIdService(id);
     if (!stock) {
       return res.status(404).json({
         status: "fail",

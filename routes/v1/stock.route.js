@@ -5,20 +5,22 @@ const authorization = require("../../middleware/authorization");
 
 const {
   createStock,
-  getCategories,
+  getStocks,
   updateStockById,
   getStockById,
-  stockDeleteById
-
+  stockDeleteById,
+  getStockByProductId,
 } = require("../../controllers/stock.controller");
 
 // create and get
 router
   .route("/")
-  .get(getCategories)
+  .get(verifyToken, authorization("admin", "staff"), getStocks)
   .post(verifyToken, authorization("admin", "staff"), createStock);
 
+router.get("/product/:id", getStockByProductId);
 //update and delete
+
 router
   .route("/:id")
   .get(getStockById)

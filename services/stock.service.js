@@ -27,7 +27,6 @@ exports.getAllStock = async () => {
     //     as: 'supplier'
     //   }
     // }
-
   ]);
   return stocks;
 };
@@ -39,8 +38,30 @@ exports.stockUpdateByIdService = async (id, data) => {
   return stock;
 };
 
-exports.getStockSerive = async (id) => {
+exports.getStockService = async (id) => {
   const stock = await Stock.findById(id);
+  return stock;
+};
+
+exports.getStockByProductIdService = async (id) => {
+  const stock = await Stock.findOne({ productId: id });
+  return stock;
+};
+
+exports.stockQuantityIncrease = async (productId, quantity, session) => {
+  const stock = await Stock.updateOne(
+    { productId, quantity: { $gte: quantity } },
+   [
+    { $set: { quantity: { $subtract: ["$quantity", quantity] } } },         // atomic decrement
+    { $set: {                                              // conditional status change
+        status: {
+          $cond: [{ $eq: ["$quantity", 0] }, "out-of-stock", "in-stock"]
+        }
+      }
+    }
+  ],
+    {session}
+  );
   return stock;
 };
 

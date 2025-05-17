@@ -1,4 +1,3 @@
-
 const Product = require("../models/Product");
 
 exports.createProductService = async (data) => {
@@ -7,7 +6,10 @@ exports.createProductService = async (data) => {
 };
 
 exports.getAllProducts = async () => {
-  const products = Product.find({}).select('-__v').populate('stock', 'quantity status sellCount -productId -_id');
+  const products = Product.find({}).select("-id").populate({
+    path: "stock",
+    select: "quantity status -_id unit",
+  });
   return products;
 };
 

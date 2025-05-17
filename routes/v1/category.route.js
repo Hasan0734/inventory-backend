@@ -8,8 +8,7 @@ const {
   getCategories,
   updateCategoryById,
   getCategoryById,
-  categoryDeleteById
-
+  categoryDeleteById,
 } = require("../../controllers/category.controller");
 
 // create and get
