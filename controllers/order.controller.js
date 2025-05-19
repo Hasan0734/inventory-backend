@@ -32,7 +32,7 @@ exports.createOrder = async (req, res) => {
         item.quantity,
         session
       );
-      console.log(ok)
+      console.log(ok);
       if (ok?.modifiedCount === 0) {
         throw new Error(`Insufficient stock for ${item.productId}`);
       }

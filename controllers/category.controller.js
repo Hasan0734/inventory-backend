@@ -25,7 +25,7 @@ exports.createCategory = async (req, res) => {
 
 exports.getCategories = async (req, res) => {
   try {
-    const categories = await getAllCategory(req.body);
+    const categories = await getAllCategory();
 
     res.status(200).json({
       status: "success",
