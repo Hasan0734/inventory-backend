@@ -10,7 +10,7 @@ exports.getCustomerService = async (queries) => {
 
   const page = Math.ceil(total / queries.limit);
 
-  console.log(queries)
+  console.log(queries);
   return { customers, total, page };
 };
 
@@ -20,7 +20,8 @@ exports.createCustomerService = async (data) => {
 };
 
 exports.updateCustomerService = async (id, data) => {
-  const customer = await Customer.findByIdAndUpdate(id, data);
+    console.log(data)
+  const customer = await Customer.findByIdAndUpdate(id, data,{new:true});
   return customer;
 };
 

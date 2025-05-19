@@ -15,14 +15,12 @@ exports.getCustomers = async (req, res) => {
     const queries = {};
 
     if (req.query.sort) {
-        console.log(req.query.sort)
       const sortBy = req.query.sort.split(",").join(" ");
       queries.sortBy = sortBy;
     }
 
     if (req.query.page) {
       const { page = 1, limit = 10 } = req.query;
-
       const skip = (page - 1) * parseInt(limit);
       queries.skip = skip;
       queries.limit = limit;
@@ -63,6 +61,7 @@ exports.createCustomer = async (req, res) => {
 exports.updateCustomerById = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id, req.body)
     const customer = await updateCustomerService(id, req.body);
 
     if (!customer) {
@@ -85,7 +84,7 @@ exports.updateCustomerById = async (req, res) => {
   }
 };
 
-exports.updateCustomerById = async (req, res) => {
+exports.deleteCustomerById = async (req, res) => {
   try {
     const { id } = req.params;
     const customer = await deleteCustomerService(id);
