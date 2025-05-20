@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 
-const OrderItemSchema = new mongoose.Schema(
+const SellItemSchema = new mongoose.Schema(
   {
-    orderId: {
+    sellId: {
       type: ObjectId,
       required: true,
       ref: "Order",
@@ -27,6 +27,6 @@ const OrderItemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const orderItem = mongoose.model("OrderItem", OrderItemSchema);
+const SellItem = mongoose.model("SellItem", SellItemSchema);
 
-module.exports = orderItem;
+module.exports = SellItem;

@@ -12,7 +12,7 @@ const { createOrderItemService } = require("../services/orderItem.service");
 const { stockQuantityIncrease } = require("../services/stock.service");
 
 exports.createOrder = async (req, res) => {
-  const { shippingAddress, items } = req.body;
+  const { shippingAddress, items, customerId, sellerName } = req.body;
   const userId = req.user._id;
 
   const session = await mongoose.startSession();
@@ -47,10 +47,10 @@ exports.createOrder = async (req, res) => {
     }
 
     //save order
-    const [order] = await createOrderService(
-      [{ userId, totalAmount, shippingAddress }],
-      { session }
-    );
+    const orderData = [
+      { userId, totalAmount, shippingAddress, customerId, sellerName },
+    ];
+    const [order] = await createOrderService(orderData, { session });
     const finalItems = orderItemsData.map((i) => ({
       ...i,
       orderId: order._id,
@@ -145,7 +145,7 @@ exports.updateOrderById = async (req, res) => {
   }
 };
 
-exports.orderDeleteById = async (req, res) => {
+exports.deleteOrderById = async (req, res) => {
   try {
     const { id } = req.params;
     const order = await deleteOrderService(id);

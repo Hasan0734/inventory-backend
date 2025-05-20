@@ -19,9 +19,14 @@ exports.createCustomerService = async (data) => {
   return customer;
 };
 
+exports.getCustomerByPhone = async (phone) => {
+  const customer = await Customer.findOne({ phone });
+  return customer;
+};
+
 exports.updateCustomerService = async (id, data) => {
-    console.log(data)
-  const customer = await Customer.findByIdAndUpdate(id, data,{new:true});
+  console.log(data);
+  const customer = await Customer.findByIdAndUpdate(id, data, { new: true });
   return customer;
 };
 

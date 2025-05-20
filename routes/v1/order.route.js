@@ -1,27 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const verifyToken = require("../../middleware/verifyToken");
-const authorization = require("../../middleware/authorization");
 
 const {
   createOrder,
   getOrders,
   updateOrderById,
   getOrderById,
-  orderDeleteById,
+  deleteOrderById,
 } = require("../../controllers/order.controller");
 
 // create and get
-router
-  .route("/")
-  .get(verifyToken, authorization("admin", "staff", "user"), getOrders)
-  .post(verifyToken, authorization("user"), createOrder);
+router.route("/").get(verifyToken, getOrders).post(verifyToken, createOrder);
 
 //update and delete
 router
   .route("/:id")
-  .get(getOrderById)
-  .put(verifyToken, authorization("admin", "staff"), updateOrderById)
-  .delete(verifyToken, authorization("admin", "staff"), orderDeleteById);
+  .get(verifyToken, getOrderById)
+  .put(verifyToken, updateOrderById)
+  .delete(verifyToken, deleteOrderById);
 
 module.exports = router;

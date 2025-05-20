@@ -3,6 +3,7 @@ const {
   createCustomerService,
   updateCustomerService,
   deleteCustomerService,
+  getCustomerByPhone,
 } = require("../services/customer.service");
 
 exports.getCustomers = async (req, res) => {
@@ -41,16 +42,49 @@ exports.getCustomers = async (req, res) => {
   }
 };
 
-exports.createCustomer = async (req, res) => {
+exports.createCustomer = async (req, res, next) => {
   try {
-    await createCustomerService(req.body);
+    const { name, phone, address } = req.body;
 
-    res.status(201).json({
+    if (!phone) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Phone number is required",
+      });
+    }
+
+    const existingCustomer = await getCustomerByPhone(phone);
+
+    if (existingCustomer) {
+      if (name !== existingCustomer.name) {
+        const updatedCustomer = await updateCustomerService(
+          existingCustomer._id,
+          req.body
+        );
+
+        return res.status(201).json({
+          status: "success",
+          message: "Customer updated successfully",
+          customer: updatedCustomer,
+        });
+      }
+
+      return res.status(200).json({
+        status: "success",
+        message: "Customer already exists",
+        customer: existingCustomer,
+      });
+    }
+
+    const newCustomer = await createCustomerService(req.body);
+
+    return res.status(201).json({
       status: "success",
       message: "Customer created successfully",
+      customer: newCustomer,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "fail",
       message: "Couldn't create the customer",
       error: error.message,
@@ -61,7 +95,7 @@ exports.createCustomer = async (req, res) => {
 exports.updateCustomerById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id, req.body)
+    console.log(id, req.body);
     const customer = await updateCustomerService(id, req.body);
 
     if (!customer) {

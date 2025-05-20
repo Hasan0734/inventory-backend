@@ -11,7 +11,6 @@ const customerSchema = new mongoose.Schema(
       // unique: true,
       // required: [true, "Email address is required"],
     },
-
     name: {
       type: String,
       required: [true, "Please provide a  name"],
@@ -20,7 +19,7 @@ const customerSchema = new mongoose.Schema(
       maxLength: [100, "Name is too large"],
     },
 
-    contactNumber: {
+    phone: {
       type: String,
       unique: true,
       required: [true, "Phone number is required."],
