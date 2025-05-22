@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin", "staff"],
+      enum: ["admin", "staff"],
       default: "user",
     },
     firstName: {
@@ -88,7 +88,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", function (next) {
-  this.role = "user";
+  this.role = "staff";
   const password = this.password;
   this.password = bcrypt.hashSync(password);
   this.confirmPassword = undefined;

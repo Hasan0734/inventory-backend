@@ -7,21 +7,28 @@ exports.createOrderService = async (data, session) => {
 
 exports.getAllOrder = async (condition, isAdmin) => {
   // base query
-  let q = Order.find(condition).populate({
-    path: "orderItems",
-    populate: {
-      path: "productId",
-      select: "name imageUrls",
+  let q = Order.find(condition).populate([
+    {
+      path: "orderItems",
+      select: "_id",
+      // populate: {
+      //   path: "productId",
+      //   select: "name unit",
+      // },
     },
-  }); // queries could hold limit/skip/sort
+    {
+      path: "customerId",
+      select: "name phone",
+    },
+  ]); // queries could hold limit/skip/sort
 
   // add population only for privileged roles
-  if (isAdmin) {
-    q = q.populate({
-      path: "userId",
-      select: "firstName lastName email", // show just these fields
-    });
-  }
+  // if (isAdmin) {
+  //   q = q.populate({
+  //     path: "userId",
+  //     select: "firstName lastName email", // show just these fields
+  //   });
+  // }
   const orders = q.exec();
   // const orders = await Order.find(condition).popultae({
   //   path: "userId",
@@ -38,7 +45,16 @@ exports.orderUpdateByIdService = async (id, data) => {
 };
 
 exports.getOrderSerive = async (id) => {
-  const order = await Order.findById(id);
+  const order = await Order.findById(id).populate([
+    {
+      path: "orderItems",
+      select: "-__v",
+      populate: {
+        path: "productId",
+        select: "name unit",
+      },
+    },
+  ]);
   return order;
 };
 

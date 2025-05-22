@@ -32,7 +32,7 @@ exports.createOrder = async (req, res) => {
         item.quantity,
         session
       );
-      console.log(ok);
+     
       if (ok?.modifiedCount === 0) {
         throw new Error(`Insufficient stock for ${item.productId}`);
       }
@@ -149,6 +149,13 @@ exports.deleteOrderById = async (req, res) => {
   try {
     const { id } = req.params;
     const order = await deleteOrderService(id);
+
+
+      const ok = await stockQuantityIncrease(
+        item.productId,
+        item.quantity,
+        session
+      );
 
     if (!order) {
       return res

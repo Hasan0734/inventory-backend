@@ -17,6 +17,21 @@ exports.signup = async (req, res) => {
   }
 };
 
+exports.addUser = async (req, res) => {
+  try {
+    const user = await signupService(req.body);
+
+    //   empletment your email
+
+    res.status(200).json({
+      status: "success",
+      message: "Successfully user add",
+    });
+  } catch (error) {
+    res.status(500).json({ status: "fail", error: error.message });
+  }
+};
+
 /** conditions of login
  *
  * 1. Check if Email and passwrod are given
